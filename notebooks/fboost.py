@@ -1,19 +1,22 @@
-import multiprocessing
 import numpy as np
 import pandas as pd
-from pyod.models.iforest import IForest
-from pyod.models.knn import KNN
+from pyod.models.knn import KNN 
+from pyod.models.iforest import IForest 
 from pyod.models.ocsvm import OCSVM
 
+import multiprocessing
 n_cpu = multiprocessing.cpu_count()
 
 import sys
 import category_encoders as encoders
 
-from sklearn.linear_model import Lasso, LogisticRegression
+from sklearn.linear_model import LinearRegression, Lasso, LogisticRegression
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.preprocessing import StandardScaler, RobustScaler, PolynomialFeatures
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler, PolynomialFeatures
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import mean_squared_error
 from sklearn.inspection import permutation_importance
+import matplotlib.pyplot as plt
 
 from scipy.stats import spearmanr
 from scipy.cluster import hierarchy
@@ -22,7 +25,7 @@ from collections import defaultdict
 
 from rulefit import RuleFit
 
-from xgboost import XGBClassifier
+from xgboost import XGBRegressor, XGBClassifier
 
 def get_numerical_cols(dataframe):
         colnames_numerical = dataframe.select_dtypes(include=[np.number]).columns.tolist()
